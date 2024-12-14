@@ -135,12 +135,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DllInject.cpp" />
     <ClCompile Include="Injector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\AbelWinAPI\AbelWinAPI.vcxproj">
       <Project>{5ad6e1af-07f6-4e6a-96ed-c1928151ed9a}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DllInject.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
