@@ -2,6 +2,7 @@
 
 #include <abel/Error.hpp>
 #include <abel/Handle.hpp>
+#include <abel/RemotePtr.hpp>
 
 #include <Windows.h>
 #include <array>
@@ -19,36 +20,17 @@ protected:
     decltype(&GetLastError) func_GetLastError = &GetLastError;
     std::array<BYTE, 0x100> shellcode;
 
-    static DWORD payload(InjectionCtx *ctx) {
-        HMODULE h = ctx->func_LoadLibrary(ctx->dll_name.data());
-        if (h) {
-            return ctx->func_GetLastError();
-        }
-        return 0;
-    }
+    static DWORD payload(InjectionCtx *ctx);
 
 public:
-    InjectionCtx(const char *dllName) {
-        const char *end = strncpy(dll_name.data(), dllName, dll_name.size());
-        if (end == dll_name.data() + dll_name.size()) {
-            fail("DLL name too large for injection");
-        }
-        dll_name[dll_name.size() - 1] = 0;
-
-        std::copy_n((const BYTE *)&payload, shellcode.size(), shellcode.begin());
-        if (std::find(shellcode.begin(), shellcode.end(), 0xCC) == shellcode.end()) {
-            fail("Shellcode too large for injection");
-        }
-    }
+    InjectionCtx(const char *dllName);
 
     InjectionCtx(InjectionCtx&&) = delete;
     InjectionCtx(const InjectionCtx&) = delete;
     InjectionCtx& operator=(InjectionCtx&&) = delete;
     InjectionCtx& operator=(const InjectionCtx&) = delete;
 
-    void inject(Handle process) {
-
-    }
+    void inject(Handle process);
 
 };
 
